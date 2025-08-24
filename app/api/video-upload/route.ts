@@ -1,9 +1,7 @@
-// app/api/video-upload/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import { auth } from "@clerk/nextjs/server";
-// 1. Import the shared Prisma instance instead of the whole client
 import { prisma } from "@/lib/prisma";
 
 cloudinary.config({
@@ -14,14 +12,13 @@ cloudinary.config({
 
 interface CloudinaryUploadResult {
   public_id: string;
-  bytes: number; // The size in bytes from Cloudinary's response
+  bytes: number;
   duration?: number;
-  [key: string]: any;
+  // FIX: Changed 'any' to 'unknown' for better type safety
+  [key: string]: unknown;
 }
 
-// 2. The function name MUST be uppercase 'POST'
 export async function POST(request: NextRequest) {
-  // 3. Authenticate the user - This completes your 'todo'
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -58,18 +55,14 @@ export async function POST(request: NextRequest) {
       }
     );
 
-    // 4. Create the video record in the database
     const video = await prisma.video.create({
       data: {
         title,
         description,
         publicId: result.public_id,
-        // 5. Convert originalSize string to a number. Use 0 as a fallback.
         originalSize: parseInt(originalSize, 10) || 0,
-        // 6. Get the compressed size correctly from the Cloudinary result
         compressedSize: result.bytes,
         duration: result.duration || 0,
-        // 7. Associate the video with the logged-in user
         userId: userId,
       },
     });
@@ -82,5 +75,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-  // 8. No 'finally' block needed when using the singleton
 }

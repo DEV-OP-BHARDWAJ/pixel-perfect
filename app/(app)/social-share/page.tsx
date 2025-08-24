@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { UploadCloud, Download, Image as ImageIcon, CheckCircle2, AlertCircle } from 'lucide-react';
 
-// --- Configuration for Social Media Formats ---
 const socialFormats = {
   "Instagram Square (1:1)": { width: 1080, height: 1080 },
   "Instagram Portrait (4:5)": { width: 1080, height: 1350 },
@@ -12,12 +11,9 @@ const socialFormats = {
   "Facebook Cover (205:78)": { width: 820, height: 312 }
 };
 
-// --- Type Definition ---
 type SocialFormat = keyof typeof socialFormats;
 
-// --- Main Component ---
 export default function SocialSharePage() {
-  // --- State Management ---
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [selectedFormat, setSelectedFormat] = useState<SocialFormat>("Instagram Square (1:1)");
   const [isUploading, setIsUploading] = useState(false);
@@ -25,31 +21,22 @@ export default function SocialSharePage() {
   const [error, setError] = useState<string | null>(null);
   const [transformedUrl, setTransformedUrl] = useState<string | null>(null);
 
-  // --- Refs ---
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
-  // --- Environment Variable ---
-  // Replace with your actual Cloudinary cloud name.
-  const CLOUDINARY_CLOUD_NAME = "djcwh56jw"; // Example cloud name
+  const CLOUDINARY_CLOUD_NAME = "djcwh56jw";
 
-
-  // --- Effects ---
   useEffect(() => {
     if (uploadedImage) {
       setIsTransforming(true);
       setError(null);
-
       const format = socialFormats[selectedFormat];
       const transformations = `c_fill,g_auto,w_${format.width},h_${format.height},q_auto`;
-      
       const url = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${transformations}/${uploadedImage}`;
-      
       setTransformedUrl(url);
     }
-  }, [selectedFormat, uploadedImage, CLOUDINARY_CLOUD_NAME]);
+  }, [selectedFormat, uploadedImage]);
 
-  // --- Event Handlers ---
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -71,8 +58,13 @@ export default function SocialSharePage() {
 
       const data = await response.json();
       setUploadedImage(data.publicId);
-    } catch (err: any) {
-      setError(err.message || "An unknown error occurred.");
+    } catch (err) {
+      // FIX: Typed the error object safely
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
     } finally {
       setIsUploading(false);
     }
@@ -91,10 +83,8 @@ export default function SocialSharePage() {
         const link = document.createElement("a");
         link.href = url;
         link.download = `${selectedFormat.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase()}.png`;
-        
         document.body.appendChild(link);
         link.click();
-        
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
       })
@@ -104,8 +94,6 @@ export default function SocialSharePage() {
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-5xl">
-        
-        {/* --- Header --- */}
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 tracking-tight">
             AI Social Media Resizer
@@ -114,13 +102,8 @@ export default function SocialSharePage() {
             Upload an image and instantly get content-aware crops for all your social platforms.
           </p>
         </header>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          
-          {/* --- Left Column: Controls --- */}
           <div className="bg-white p-6 rounded-xl shadow-md space-y-6">
-            
-            {/* --- Upload Section --- */}
             <div>
               <h2 className="text-xl font-semibold text-gray-700 mb-3 flex items-center">
                 <UploadCloud className="w-6 h-6 mr-2 text-indigo-600" />
@@ -150,8 +133,6 @@ export default function SocialSharePage() {
                 </div>
               )}
             </div>
-
-            {/* --- Format Selection (Conditional) --- */}
             {uploadedImage && (
               <div>
                 <h2 className="text-xl font-semibold text-gray-700 mb-3 flex items-center">
@@ -173,8 +154,6 @@ export default function SocialSharePage() {
               </div>
             )}
           </div>
-
-          {/* --- Right Column: Preview & Download --- */}
           <div className="bg-white p-6 rounded-xl shadow-md min-h-[400px] flex flex-col justify-center items-center">
             {!uploadedImage ? (
               <div className="text-center text-gray-500">
@@ -190,13 +169,12 @@ export default function SocialSharePage() {
                       <span className="loading loading-spinner loading-lg text-indigo-600"></span>
                     </div>
                   )}
-                  {/* --- FIX IS HERE --- */}
-                  {/* We only render the img tag if transformedUrl is a valid, non-empty string */}
                   {transformedUrl && (
                     <img
                       key={transformedUrl} 
                       src={transformedUrl}
-                      alt={`Transformed image for ${selectedFormat}`}
+                      // FIX: Added a meaningful alt prop
+                      alt={`Preview for ${selectedFormat}`}
                       ref={imageRef}
                       onLoad={() => setIsTransforming(false)}
                       onError={() => {
@@ -219,8 +197,6 @@ export default function SocialSharePage() {
             )}
           </div>
         </div>
-        
-        {/* --- Error Display --- */}
         {error && (
             <div role="alert" className="alert alert-error mt-8 shadow-lg">
                 <AlertCircle className="w-6 h-6" />
