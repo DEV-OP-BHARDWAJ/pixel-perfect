@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pixel Perfect - AI-Powered Media Resizer
 
-## Getting Started
+**Tagline:** _Your content, intelligently resized. Upload once, post anywhere._
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Pixel Perfect is a full-stack AI-powered SaaS application designed to solve a common and frustrating problem for content creators: resizing and optimizing media for different social media platforms. Instead of manually cropping images or trimming videos, users can simply upload their media, and our application uses Cloudinary's powerful AI to generate perfectly framed, content-aware images and smart video previews.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project is built with a modern, scalable tech stack, featuring Next.js for the frontend and backend, Prisma with NeonDB for the database, and Clerk for secure user authentication.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Core Features
 
-## Learn More
+- **🤖 AI Content-Aware Image Resizing:** Upload an image and instantly generate versions for Instagram, Twitter, Facebook, and more. The AI automatically detects the main subject to ensure it's never awkwardly cropped.
+- **🎬 AI Smart Video Previews:** Instead of a static thumbnail, the application generates dynamic, engaging video previews (similar to YouTube) by using AI to select the most interesting segments of your video.
+- **🔐 Secure Authentication:** Full user management system with sign-up, sign-in, and protected routes, powered by Clerk.
+- **☁️ Cloud-Based Media Management:** All media is efficiently handled, stored, and transformed by Cloudinary, ensuring fast delivery and optimization.
+- **⚡ Modern & Performant:** Built with Next.js 14 (App Router) for a fast, server-rendered user experience.
+- **💾 Serverless Database:** Uses Prisma ORM with a serverless NeonDB (Postgres) database for scalability and ease of use.
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Framework:** [Next.js](https://nextjs.org/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) with [daisyUI](https://daisyui.com/)
+- **Database:** [NeonDB](https://neon.tech/) (Serverless Postgres)
+- **ORM:** [Prisma](https://www.prisma.io/)
+- **Authentication:** [Clerk](https://clerk.com/)
+- **Media Management:** [Cloudinary](https://cloudinary.com/)
+- **Deployment:** [Vercel](https://vercel.com/)
